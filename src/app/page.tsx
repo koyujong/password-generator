@@ -6,6 +6,7 @@ import { extraTranslations } from "@/lib/extraTranslations";
 import { generatePassword, calculateStrength, getStrengthColor } from "@/lib/passwordUtils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AdBanner from "@/components/AdBanner";
 import {
   ClipboardDocumentIcon,
   ArrowPathIcon,
@@ -64,11 +65,9 @@ export default function PasswordGeneratorPage() {
       <Header lang={lang} setLang={setLang} title={t.title} />
 
       <main className="pt-24 pb-20 px-4 max-w-4xl mx-auto">
-        {/* AdSense Placeholder Upper */}
-        <div className="mb-10 w-full h-24 sm:h-32 bg-slate-200/50 rounded-2xl flex items-center justify-center border-2 border-dashed border-slate-300 group overflow-hidden relative">
-          {/* <!-- Google AdSense Upper Banner Placeholder --> */}
-          <span className="text-slate-400 font-medium text-sm sm:text-base z-10">AdSpace: Horizontal Banner (Max-width: 900px)</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        {/* AdSense Upper Banner */}
+        <div className="mb-10">
+          <AdBanner format="horizontal" className="min-h-[90px]" />
         </div>
 
         {/* Hero Title */}
@@ -188,11 +187,9 @@ export default function PasswordGeneratorPage() {
           </button>
         </div>
 
-        {/* AdSense Placeholder Lower */}
-        <div className="mb-16 w-full h-24 sm:h-32 bg-slate-200/50 rounded-2xl flex items-center justify-center border-2 border-dashed border-slate-300 group overflow-hidden relative">
-          {/* <!-- Google AdSense Lower Banner Placeholder --> */}
-          <span className="text-slate-400 font-medium text-sm sm:text-base z-10">AdSpace: Horizontal Banner (Max-width: 900px)</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        {/* AdSense Lower Banner */}
+        <div className="mb-16">
+          <AdBanner format="horizontal" className="min-h-[90px]" />
         </div>
 
         {/* Password Security Statistics */}
