@@ -65,9 +65,9 @@ export default function PasswordGeneratorPage() {
       <Header lang={lang} setLang={setLang} title={t.title} />
 
       <main className="pt-24 pb-20 px-4 max-w-4xl mx-auto">
-        {/* AdSense Upper Banner */}
+        {/* AdSense Upper Banner - 패스워드제너레이터(상단) */}
         <div className="mb-10">
-          <AdBanner format="horizontal" className="min-h-[90px]" />
+          <AdBanner slot="6780266694" />
         </div>
 
         {/* Hero Title */}
@@ -187,9 +187,9 @@ export default function PasswordGeneratorPage() {
           </button>
         </div>
 
-        {/* AdSense Lower Banner */}
+        {/* AdSense Lower Banner - 패스워드제너레이터(하단) */}
         <div className="mb-16">
-          <AdBanner format="horizontal" className="min-h-[90px]" />
+          <AdBanner slot="7907422200" />
         </div>
 
         {/* Password Security Statistics */}
