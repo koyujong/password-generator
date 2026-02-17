@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: '*',
             allow: '/',
         },
-        sitemap: 'https://strongpassgen.com/sitemap.xml',
+        sitemap: 'https://pw.4kdrivewalk.com/sitemap.xml',
     };
 }
