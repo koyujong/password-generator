@@ -14,8 +14,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pw.4kdrivewalk.com"),
   title: "Strong Password Generator | Secure & Private",
   description: "Secure, random password generator. 100% client-side, private, and free.",
+  alternates: {
+    canonical: "/",
+  },
+  verification: {
+    google: "47z3uMVzsCyw66vTGaSLLtCKy3vebHH5QOU4H3yCDR8",
+    other: {
+      "naver-site-verification": "78fabd3edd2057c3616be3d192d8c81ddde1e667",
+    },
+  },
 };
 
 export default function RootLayout({
@@ -40,8 +50,6 @@ export default function RootLayout({
             gtag('config', 'G-3844FCWG6G');
           `}
         </Script>
-        {/* Google Search Console 소유권 인증 */}
-        <meta name="google-site-verification" content="47z3uMVzsCyw66vTGaSLLtCKy3vebHH5QOU4H3yCDR8" />
         {/* Google AdSense 자동 광고 스크립트 */}
         <Script
           async
