@@ -1,22 +1,22 @@
 export interface BlogPost {
-    slug: string;
-    title: string;
-    description: string;
-    date: string;
-    category: string;
-    content: string;
-    keywords: string[];
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  content: string;
+  keywords: string[];
 }
 
 export const blogPosts: BlogPost[] = [
-    {
-        slug: "secure-random-password-generator-for-crypto-wallets",
-        title: "Secure Random Password Generator for Crypto Wallets",
-        description: "Protect your digital assets with high-entropy passwords generated specifically for crypto wallets like MetaMask and Ledger.",
-        date: "2026-02-21",
-        category: "Crypto",
-        keywords: ["crypto", "wallet", "security", "random password"],
-        content: `
+  {
+    slug: "secure-random-password-generator-for-crypto-wallets",
+    title: "Secure Random Password Generator for Crypto Wallets",
+    description: "Protect your digital assets with high-entropy passwords generated specifically for crypto wallets like MetaMask and Ledger.",
+    date: "2026-02-21",
+    category: "Crypto",
+    keywords: ["crypto", "wallet", "security", "random password"],
+    content: `
       <h2>Why Crypto Wallets Need Extra Strong Passwords</h2>
       <p>In the world of decentralized finance, you are your own bank. If your crypto wallet password is compromised, there is no 'forgot password' button to save you. Using a <strong>secure random password generator for crypto wallets</strong> is the first line of defense against hackers.</p>
       <h3>Key Requirements for a Crypto Password</h3>
@@ -26,75 +26,75 @@ export const blogPosts: BlogPost[] = [
         <li><strong>Complexity:</strong> A mix of symbols, numbers, and cases makes brute-forcing nearly impossible.</li>
       </ul>
     `
-    },
-    {
-        slug: "how-long-to-crack-16-character-alphanumeric-password",
-        title: "How Long to Crack a 16 Character Alphanumeric Password?",
-        description: "Discover the mathematical reality behind password cracking times for 16-character alphanumeric combinations in 2026.",
-        date: "2026-02-21",
-        category: "Security",
-        keywords: ["brute force", "16 characters", "cracking time"],
-        content: `
+  },
+  {
+    slug: "how-long-to-crack-16-character-alphanumeric-password",
+    title: "How Long to Crack a 16 Character Alphanumeric Password?",
+    description: "Discover the mathematical reality behind password cracking times for 16-character alphanumeric combinations in 2026.",
+    date: "2026-02-21",
+    category: "Security",
+    keywords: ["brute force", "16 characters", "cracking time"],
+    content: `
       <h2>The Math of 16-Character Passwords</h2>
       <p>Cracking a password isn't magic; it's brute-force calculation. When you ask <strong>how long to crack a 16 character alphanumeric password</strong>, the answer is measured in centuries, not days.</p>
       <h3>Brute Force Estimates in 2026</h3>
       <p>With modern GPU clusters, a simple 8-character password can be cracked in minutes. However, a 16-character alphanumeric password creates <strong>62^16</strong> possible combinations.</p>
     `
-    },
-    {
-        slug: "is-12-character-password-secure-enough-in-2026",
-        title: "Is a 12 Character Password Secure Enough in 2026?",
-        description: "With rising computing power, we evaluate if 12-character passwords still meet the safety standards for personal and professional use.",
-        date: "2026-02-21",
-        category: "Trends",
-        keywords: ["12 characters", "2026 security", "password safety"],
-        content: `
+  },
+  {
+    slug: "is-12-character-password-secure-enough-in-2026",
+    title: "Is a 12 Character Password Secure Enough in 2026?",
+    description: "With rising computing power, we evaluate if 12-character passwords still meet the safety standards for personal and professional use.",
+    date: "2026-02-21",
+    category: "Trends",
+    keywords: ["12 characters", "2026 security", "password safety"],
+    content: `
       <h2>The Evolution of Password Security</h2>
       <p>As we move further into 2026, many users ask: <strong>is a 12 character password secure enough</strong>? The answer depends on what you are protecting.</p>
       <h3>The 2026 Recommendation</h3>
       <p>For total peace of mind, we recommend shifting your baseline to <strong>14 or 16 characters</strong> for all critical accounts.</p>
     `
-    },
-    {
-        slug: "safe-and-memorable-wi-fi-password-ideas-for-airbnb-hosts",
-        title: "Safe and Memorable Wi-Fi Password Ideas for Airbnb Hosts",
-        description: "Provide a great guest experience with these secure yet easy-to-type Wi-Fi password strategies for Airbnb rentals.",
-        date: "2026-02-21",
-        category: "Life",
-        keywords: ["airbnb", "wifi", "memorable", "hosts"],
-        content: `
+  },
+  {
+    slug: "safe-and-memorable-wi-fi-password-ideas-for-airbnb-hosts",
+    title: "Safe and Memorable Wi-Fi Password Ideas for Airbnb Hosts",
+    description: "Provide a great guest experience with these secure yet easy-to-type Wi-Fi password strategies for Airbnb rentals.",
+    date: "2026-02-21",
+    category: "Life",
+    keywords: ["airbnb", "wifi", "memorable", "hosts"],
+    content: `
       <h2>Balancing Security and Guest Experience</h2>
       <p>As a host, you want your guests to connect quickly, but you don't want your home network vulnerable. Here are <strong>safe and memorable Wi-Fi password ideas for Airbnb hosts</strong>.</p>
       <h3>Strategy: The 'Object-Action' Formula</h3>
       <p>Combine a common object in the house with a fun action. <br/>Example: <strong>Yellow-Chair-Sitting-2026</strong></p>
     `
-    },
-    {
-        slug: "how-to-make-a-strong-password-without-special-characters",
-        title: "How to Make a Strong Password Without Special Characters",
-        description: "Learn how to maximize password entropy using only letters and numbers when symbols are not allowed by the system.",
-        date: "2026-02-21",
-        category: "Tips",
-        keywords: ["no symbols", "strong alphabet", "alphanumeric"],
-        content: `
+  },
+  {
+    slug: "how-to-make-a-strong-password-without-special-characters",
+    title: "How to Make a Strong Password Without Special Characters",
+    description: "Learn how to maximize password entropy using only letters and numbers when symbols are not allowed by the system.",
+    date: "2026-02-21",
+    category: "Tips",
+    keywords: ["no symbols", "strong alphabet", "alphanumeric"],
+    content: `
       <h2>Maxing Out Security with Alphanumeric Only</h2>
       <p>If you're using a legacy system or a specific login that doesn't allow symbols, you'll need to know <strong>how to make a strong password without special characters</strong>.</p>
       <h3>The Secret is Length</h3>
       <p>When you take away the diversity of character types (symbols), you must compensate with <strong>volume</strong>. A 20-character alphanumeric password is much stronger than an 8-character password with complex symbols.</p>
     `
-    },
-    {
-        slug: "random-password-generator-with-specific-symbols-only",
-        title: "Random Password Generator with Specific Symbols Only",
-        description: "Sometimes you need to limit symbols to specific ones. Here is how to generate passwords with a custom symbol set.",
-        date: "2026-02-21",
-        category: "Tools",
-        keywords: ["custom symbols", "specific symbols", "generator"],
-        content: `
+  },
+  {
+    slug: "random-password-generator-with-specific-symbols-only",
+    title: "Random Password Generator with Specific Symbols Only",
+    description: "Sometimes you need to limit symbols to specific ones. Here is how to generate passwords with a custom symbol set.",
+    date: "2026-02-21",
+    category: "Tools",
+    keywords: ["custom symbols", "specific symbols", "generator"],
+    content: `
       <h2>Meeting Strict Platform Requirements</h2>
       <p>Some banking sites or corporate portals only allow a handful of specific symbols. In this guide, we explore the need for a <strong>random password generator with specific symbols only</strong>.</p>
       <h3>Why Filter Symbols?</h3>
-      <p>Certain symbols like the backtick (`) or quotes(') can cause issues in SQL databases or shell scripts.</p>
+      <p>Certain symbols like the backtick (\`) or quotes(') can cause issues in SQL databases or shell scripts.</p>
     `
   },
   {
