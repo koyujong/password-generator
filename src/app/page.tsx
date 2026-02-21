@@ -10,8 +10,15 @@ import AdBanner from "@/components/AdBanner";
 import {
   ClipboardDocumentIcon,
   ArrowPathIcon,
-  CheckIcon
+  CheckIcon,
+  TrashIcon,
+  DocumentDuplicateIcon
 } from "@heroicons/react/24/outline";
+
+interface HistoryItem {
+  pw: string;
+  timestamp: number;
+}
 
 export default function PasswordGeneratorPage() {
   // State for language
@@ -30,7 +37,34 @@ export default function PasswordGeneratorPage() {
   const [copied, setCopied] = useState(false);
   const [strength, setStrength] = useState(0);
 
-  // Handle generation
+  // History state
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [copiedHistoryIndex, setCopiedHistoryIndex] = useState<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  // Load history from local storage on mount
+  useEffect(() => {
+    setIsClient(true);
+    const saved = localStorage.getItem("pwHistory");
+    if (saved) {
+      try {
+        setHistory(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse history", e);
+      }
+    }
+  }, []);
+
+  const addToHistory = (pass: string) => {
+    setHistory(prev => {
+      if (prev.length > 0 && prev[0].pw === pass) return prev;
+      const newHistory = [{ pw: pass, timestamp: Date.now() }, ...prev].slice(0, 50);
+      localStorage.setItem("pwHistory", JSON.stringify(newHistory));
+      return newHistory;
+    });
+  };
+
+  // Handle generation (Auto-Regen on Options Change)
   const handleGenerate = useCallback(() => {
     const newPass = generatePassword(length, options);
     setPassword(newPass);
@@ -42,6 +76,28 @@ export default function PasswordGeneratorPage() {
   useEffect(() => {
     handleGenerate();
   }, [handleGenerate]);
+
+  // Handle Explicit Generation (Button Clicks)
+  const handleGenerateClick = () => {
+    const newPass = generatePassword(length, options);
+    setPassword(newPass);
+    setStrength(calculateStrength(newPass));
+    setCopied(false);
+    addToHistory(newPass);
+  };
+
+  const handleCopyHistory = (pw: string, index: number) => {
+    navigator.clipboard.writeText(pw);
+    setCopiedHistoryIndex(index);
+    setTimeout(() => setCopiedHistoryIndex(null), 2000);
+  };
+
+  const handleClearHistory = () => {
+    if (window.confirm(lang === 'ko' ? "히스토리를 모두 지우시겠습니까?" : lang === 'es' ? "¿Borrar todo el historial?" : "Are you sure you want to clear your password history?")) {
+      setHistory([]);
+      localStorage.removeItem("pwHistory");
+    }
+  };
 
   // Dynamic SEO
   useEffect(() => {
@@ -58,6 +114,7 @@ export default function PasswordGeneratorPage() {
     navigator.clipboard.writeText(password);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    addToHistory(password);
   };
 
   return (
@@ -90,7 +147,7 @@ export default function PasswordGeneratorPage() {
             </div>
             <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
               <button
-                onClick={handleGenerate}
+                onClick={handleGenerateClick}
                 className="p-2 sm:p-3 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-xl transition-all shadow-sm active:scale-95"
                 title={t.generate}
               >
@@ -179,13 +236,59 @@ export default function PasswordGeneratorPage() {
 
           {/* Generate Button */}
           <button
-            onClick={handleGenerate}
+            onClick={handleGenerateClick}
             className="w-full mt-10 py-5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold text-xl rounded-2xl shadow-[0_10px_30px_rgba(79,70,229,0.3)] transition-all hover:shadow-[0_15px_40px_rgba(79,70,229,0.4)] active:scale-[0.98] flex items-center justify-center gap-3"
           >
             <ArrowPathIcon className="w-6 h-6" />
             {t.generate}
           </button>
         </div>
+
+        {/* Local Password History */}
+        {isClient && (
+          <section className="mb-12">
+            <div className="flex justify-between items-center mb-6 px-2">
+              <h2 className="text-2xl font-black text-slate-900 tracking-tight">{t.historyTitle}</h2>
+              {history.length > 0 && (
+                <button
+                  onClick={handleClearHistory}
+                  className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-red-600 transition-colors"
+                >
+                  <TrashIcon className="w-4 h-4" />
+                  {t.clearHistory}
+                </button>
+              )}
+            </div>
+
+            <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden ring-1 ring-slate-100">
+              {history.length === 0 ? (
+                <div className="p-10 text-center text-slate-400 font-medium">
+                  {t.noHistory}
+                </div>
+              ) : (
+                <ul className="divide-y divide-slate-100 max-h-80 overflow-y-auto">
+                  {history.map((record, idx) => (
+                    <li key={record.timestamp} className="flex justify-between items-center p-4 sm:px-6 hover:bg-slate-50 transition-colors group">
+                      <div className="truncate pr-4 flex-1">
+                        <p className="font-mono text-lg text-slate-800 tracking-wide truncate">{record.pw}</p>
+                        <p className="text-xs text-slate-400 font-medium mt-0.5">
+                          {new Date(record.timestamp).toLocaleTimeString(lang === 'ko' ? 'ko-KR' : lang === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleCopyHistory(record.pw, idx)}
+                        className={`p-2.5 rounded-xl transition-all shadow-sm active:scale-95 ${copiedHistoryIndex === idx ? 'bg-green-500 text-white' : 'bg-slate-100 text-slate-400 hover:bg-white hover:text-indigo-600 hover:shadow'}`}
+                        title={t.copy}
+                      >
+                        {copiedHistoryIndex === idx ? <CheckIcon className="w-5 h-5" /> : <DocumentDuplicateIcon className="w-5 h-5" />}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* AdSense Lower Banner - 패스워드제너레이터(하단) */}
         <div className="mb-16">

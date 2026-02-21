@@ -48,7 +48,10 @@ export const translations = {
         q: "Is this tool really free?",
         a: "Yes, completely free with no hidden charges. This tool runs entirely in your browser with no server costs, so we can offer it for free forever."
       }
-    ]
+    ],
+    historyTitle: "Password History",
+    clearHistory: "Clear History",
+    noHistory: "No passwords generated yet."
   },
   ko: {
     title: "강력한 비밀번호 생성기",
@@ -97,7 +100,10 @@ export const translations = {
         q: "이 도구는 정말 무료인가요?",
         a: "네, 숨겨진 비용 없이 완전히 무료입니다. 이 도구는 서버 비용 없이 브라우저에서 전적으로 실행되므로 영원히 무료로 제공할 수 있습니다."
       }
-    ]
+    ],
+    historyTitle: "비밀번호 히스토리",
+    clearHistory: "히스토리 지우기",
+    noHistory: "아직 무작위로 복사/생성된 비밀번호가 없습니다."
   },
   es: {
     title: "Generador de Contraseñas Fuertes",
@@ -146,6 +152,9 @@ export const translations = {
         q: "¿Esta herramienta es realmente gratuita?",
         a: "Sí, completamente gratuita sin cargos ocultos. Esta herramienta funciona completamente en tu navegador sin costos de servidor, por lo que podemos ofrecerla gratis para siempre."
       }
-    ]
+    ],
+    historyTitle: "Historial de contraseñas",
+    clearHistory: "Borrar historial",
+    noHistory: "Aún no se han generado contraseñas."
   }
 };
