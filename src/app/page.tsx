@@ -41,6 +41,7 @@ export default function PasswordGeneratorPage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [copiedHistoryIndex, setCopiedHistoryIndex] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   // Load history from local storage on mount
   useEffect(() => {
@@ -93,10 +94,14 @@ export default function PasswordGeneratorPage() {
   };
 
   const handleClearHistory = () => {
-    if (window.confirm(lang === 'ko' ? "히스토리를 모두 지우시겠습니까?" : lang === 'es' ? "¿Borrar todo el historial?" : "Are you sure you want to clear your password history?")) {
-      setHistory([]);
-      localStorage.removeItem("pwHistory");
+    if (!confirmClear) {
+      setConfirmClear(true);
+      setTimeout(() => setConfirmClear(false), 3000);
+      return;
     }
+    setHistory([]);
+    localStorage.removeItem("pwHistory");
+    setConfirmClear(false);
   };
 
   // Dynamic SEO
@@ -252,10 +257,10 @@ export default function PasswordGeneratorPage() {
               {history.length > 0 && (
                 <button
                   onClick={handleClearHistory}
-                  className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-red-600 transition-colors"
+                  className={`flex items-center gap-2 text-sm font-semibold transition-colors ${confirmClear ? 'text-red-600' : 'text-slate-500 hover:text-red-500'}`}
                 >
                   <TrashIcon className="w-4 h-4" />
-                  {t.clearHistory}
+                  {confirmClear ? (lang === 'ko' ? "정말 지우시겠습니까?" : lang === 'es' ? "¿Estás seguro?" : "Are you sure?") : t.clearHistory}
                 </button>
               )}
             </div>
