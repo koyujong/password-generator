@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { translations, Language } from "@/lib/translations";
 import { extraTranslations } from "@/lib/extraTranslations";
-import { generatePassword, calculateStrength, getStrengthColor } from "@/lib/passwordUtils";
+import { generatePassword, generatePassphrase, calculateStrength, getStrengthColor } from "@/lib/passwordUtils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AdBanner from "@/components/AdBanner";
@@ -36,6 +36,10 @@ export default function PasswordGeneratorPage() {
   });
   const [copied, setCopied] = useState(false);
   const [strength, setStrength] = useState(0);
+  const [crackTime, setCrackTime] = useState("");
+  const [mode, setMode] = useState<'password' | 'passphrase'>('password');
+  const [wordCount, setWordCount] = useState(4);
+  const [separator, setSeparator] = useState('-');
 
   // History state
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -65,13 +69,24 @@ export default function PasswordGeneratorPage() {
     });
   };
 
+  const formatCrackTime = (time: string) => {
+    if (lang === 'en') return time;
+    const mappings: Record<string, Record<string, string>> = {
+      ko: { 'instantly': '즉시', 'less than a second': '1초 미만', '1 second': '1초', 'seconds': '수 초', '1 minute': '1분', 'minutes': '수 분', '1 hour': '1시간', 'hours': '수 시간', '1 day': '1일', 'days': '수 일', '1 month': '1개월', 'months': '수 개월', '1 year': '1년', 'years': '수 년', 'centuries': '수백 년' },
+      es: { 'instantly': 'instantáneamente', 'less than a second': 'menos de un segundo', '1 second': '1 segundo', 'seconds': 'segundos', '1 minute': '1 minuto', 'minutes': 'minutos', '1 hour': '1 hora', 'hours': 'horas', '1 day': '1 día', 'days': 'días', '1 month': '1 mes', 'months': 'meses', '1 year': '1 año', 'years': 'años', 'centuries': 'siglos' }
+    };
+    return mappings[lang][time] || time;
+  };
+
   // Handle generation (Auto-Regen on Options Change)
   const handleGenerate = useCallback(() => {
-    const newPass = generatePassword(length, options);
+    const newPass = mode === 'password' ? generatePassword(length, options) : generatePassphrase(wordCount, separator);
     setPassword(newPass);
-    setStrength(calculateStrength(newPass));
+    const result = calculateStrength(newPass);
+    setStrength(result.score);
+    setCrackTime(result.timeString);
     setCopied(false);
-  }, [length, options]);
+  }, [mode, length, options, wordCount, separator]);
 
   // Initial generation
   useEffect(() => {
@@ -80,9 +95,11 @@ export default function PasswordGeneratorPage() {
 
   // Handle Explicit Generation (Button Clicks)
   const handleGenerateClick = () => {
-    const newPass = generatePassword(length, options);
+    const newPass = mode === 'password' ? generatePassword(length, options) : generatePassphrase(wordCount, separator);
     setPassword(newPass);
-    setStrength(calculateStrength(newPass));
+    const result = calculateStrength(newPass);
+    setStrength(result.score);
+    setCrackTime(result.timeString);
     setCopied(false);
     addToHistory(newPass);
   };
@@ -189,55 +206,118 @@ export default function PasswordGeneratorPage() {
                 ></div>
               ))}
             </div>
+            {crackTime && (
+              <p className="text-sm font-semibold text-slate-500 mt-4 text-right">
+                {t.crackTime} <span className="text-indigo-600 font-bold">{formatCrackTime(crackTime)}</span>
+              </p>
+            )}
+          </div>
+
+          {/* Mode Switcher */}
+          <div className="flex p-1.5 bg-slate-100 rounded-2xl mb-8">
+            <button
+              onClick={() => setMode('password')}
+              className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${mode === 'password' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              {t.modePassword}
+            </button>
+            <button
+              onClick={() => setMode('passphrase')}
+              className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all ${mode === 'passphrase' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              {t.modePassphrase}
+            </button>
           </div>
 
           {/* Settings Grid */}
-          <div className="grid md:grid-cols-2 gap-10">
-            {/* Slider */}
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <label className="text-sm font-bold text-slate-700">{t.length}</label>
-                <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg font-mono font-bold text-lg border border-indigo-100">{length}</span>
+          {mode === 'password' ? (
+            <div className="grid md:grid-cols-2 gap-10">
+              {/* Slider */}
+              <div>
+                <div className="flex justify-between items-center mb-5">
+                  <label className="text-sm font-bold text-slate-700">{t.length}</label>
+                  <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg font-mono font-bold text-lg border border-indigo-100">{length}</span>
+                </div>
+                <input
+                  type="range"
+                  min="8"
+                  max="64"
+                  value={length}
+                  onChange={(e) => setLength(parseInt(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                />
+                <div className="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+                  <span>8</span>
+                  <span>32</span>
+                  <span>64</span>
+                </div>
               </div>
-              <input
-                type="range"
-                min="8"
-                max="64"
-                value={length}
-                onChange={(e) => setLength(parseInt(e.target.value))}
-                className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-              />
-              <div className="flex justify-between text-xs text-slate-400 mt-2 font-medium">
-                <span>8</span>
-                <span>32</span>
-                <span>64</span>
-              </div>
-            </div>
 
-            {/* Checkboxes */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Checkbox
-                label={t.includeUppercase}
-                checked={options.uppercase}
-                onChange={(v) => setOptions({ ...options, uppercase: v })}
-              />
-              <Checkbox
-                label={t.includeLowercase}
-                checked={options.lowercase}
-                onChange={(v) => setOptions({ ...options, lowercase: v })}
-              />
-              <Checkbox
-                label={t.includeNumbers}
-                checked={options.numbers}
-                onChange={(v) => setOptions({ ...options, numbers: v })}
-              />
-              <Checkbox
-                label={t.includeSymbols}
-                checked={options.symbols}
-                onChange={(v) => setOptions({ ...options, symbols: v })}
-              />
+              {/* Checkboxes */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Checkbox
+                  label={t.includeUppercase}
+                  checked={options.uppercase}
+                  onChange={(v) => setOptions({ ...options, uppercase: v })}
+                />
+                <Checkbox
+                  label={t.includeLowercase}
+                  checked={options.lowercase}
+                  onChange={(v) => setOptions({ ...options, lowercase: v })}
+                />
+                <Checkbox
+                  label={t.includeNumbers}
+                  checked={options.numbers}
+                  onChange={(v) => setOptions({ ...options, numbers: v })}
+                />
+                <Checkbox
+                  label={t.includeSymbols}
+                  checked={options.symbols}
+                  onChange={(v) => setOptions({ ...options, symbols: v })}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-10">
+              {/* Word Count Slider */}
+              <div>
+                <div className="flex justify-between items-center mb-5">
+                  <label className="text-sm font-bold text-slate-700">{t.wordCount}</label>
+                  <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg font-mono font-bold text-lg border border-indigo-100">{wordCount}</span>
+                </div>
+                <input
+                  type="range"
+                  min="3"
+                  max="10"
+                  value={wordCount}
+                  onChange={(e) => setWordCount(parseInt(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                />
+                <div className="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+                  <span>3</span>
+                  <span>10</span>
+                </div>
+              </div>
+
+              {/* Separator */}
+              <div>
+                <div className="flex justify-between items-center mb-5">
+                  <label className="text-sm font-bold text-slate-700">{t.separator}</label>
+                </div>
+                <div className="flex gap-3">
+                  {['-', '_', '.', ' ', ','].map(sep => (
+                    <button
+                      key={sep}
+                      onClick={() => setSeparator(sep)}
+                      className={`w-12 h-12 rounded-xl border-2 font-mono text-xl font-bold flex items-center justify-center transition-all ${separator === sep ? 'border-indigo-600 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-white text-slate-500 hover:border-indigo-300'}`}
+                    >
+                      {sep === ' ' ? 'SPC' : sep}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Generate Button */}
           <button

@@ -1,3 +1,18 @@
+import zxcvbn from 'zxcvbn';
+
+const WORD_LIST = [
+    "apple", "banana", "cherry", "dragon", "eagle", "falcon", "galaxy", "hammer", "island", "jungle",
+    "kangaroo", "lemon", "mango", "ninja", "ocean", "panther", "quantum", "rocket", "safari", "tiger",
+    "unicorn", "velvet", "window", "xenon", "yellow", "zebra", "astronaut", "biscuit", "cactus", "dolphin",
+    "elephant", "forest", "guitar", "helmet", "iguana", "jacket", "koala", "lantern", "magnet", "nebula",
+    "octopus", "penguin", "quartz", "radar", "sunset", "tornado", "umbrella", "volcano", "waffle", "yacht",
+    "zombie", "avalanche", "blizzard", "comet", "desert", "echo", "flamingo", "glacier", "hurricane", "iceberg",
+    "jaguar", "kiwi", "leopard", "meteor", "nomad", "oasis", "pirate", "quasar", "robot", "sphinx",
+    "tsunami", "utopia", "vampire", "wizard", "yeti", "zeppelin", "acoustic", "bamboo", "canyon", "diamond",
+    "eclipse", "fossil", "galaxy", "horizon", "infinity", "jupiter", "karma", "lotus", "matrix", "nexus",
+    "omega", "phoenix", "quest", "rhino", "sapphire", "titan", "universe", "vortex", "whisper", "zenith"
+];
+
 /**
  * Secure password generation using window.crypto.getRandomValues
  */
@@ -37,28 +52,33 @@ export function generatePassword(
 }
 
 /**
- * Calculate password strength score (0-4)
+ * Secure passphrase generation using window.crypto.getRandomValues
  */
-export function calculateStrength(password: string): number {
-    if (!password) return 0;
-    let score = 0;
+export function generatePassphrase(wordCount: number, separator: string = '-'): string {
+    const array = new Uint32Array(wordCount);
+    window.crypto.getRandomValues(array);
 
-    // Length factor
-    if (password.length > 8) score++;
-    if (password.length > 12) score++;
+    const words = [];
+    for (let i = 0; i < wordCount; i++) {
+        words.push(WORD_LIST[array[i] % WORD_LIST.length]);
+    }
 
-    // Variety factors
-    if (/[A-Z]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
+    return words.join(separator);
+}
 
-    // Normalize to 0-4
-    if (score <= 2) return 0; // Very Weak
-    if (score === 3) return 1; // Weak
-    if (score === 4) return 2; // Medium
-    if (score === 5) return 3; // Strong
-    return 4; // Very Strong
+/**
+ * Calculate password strength score and return crack time estimate using zxcvbn
+ */
+export function calculateStrength(password: string): { score: number, timeString: string } {
+    if (!password) return { score: 0, timeString: "" };
+
+    const result = zxcvbn(password);
+
+    // zxcvbn returns score 0-4
+    return {
+        score: result.score,
+        timeString: String(result.crack_times_display.offline_slow_hashing_1e4_per_second)
+    };
 }
 
 export function getStrengthColor(score: number): string {
