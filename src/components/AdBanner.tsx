@@ -32,10 +32,15 @@ export default function AdBanner({ slot, format = "auto", className = "" }: AdBa
     }, []);
 
     return (
-        <div className={`w-full overflow-hidden ${className}`} ref={adRef}>
+        <div className={`w-full min-h-[100px] bg-slate-100/50 flex items-center justify-center rounded-2xl overflow-hidden relative ${className}`} ref={adRef}>
+            {/* 광고 플레이스홀더 (광고 차단기나 미승인 상태에서 영역을 유지하기 위함) */}
+            <span className="absolute z-0 text-slate-300 text-sm font-medium tracking-widest uppercase pointer-events-none">
+                Advertisement
+            </span>
+
             <ins
-                className="adsbygoogle"
-                style={{ display: "block" }}
+                className="adsbygoogle relative z-10"
+                style={{ display: "block", minWidth: "250px", width: "100%" }}
                 data-ad-client="ca-pub-3488637908196788"
                 data-ad-slot={slot || ""}
                 data-ad-format={format}
