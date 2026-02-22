@@ -46,31 +46,38 @@ export default function BlogListPage() {
                 </header>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {blogPosts.map((post) => (
-                        <Link
-                            key={post.slug}
-                            href={`/blog/${post.slug}`}
-                            className="group bg-white rounded-3xl p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 duration-300"
-                        >
-                            <div className="mb-4">
-                                <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold uppercase tracking-wider">
-                                    {post.category}
-                                </span>
-                                <span className="ml-3 text-xs text-slate-400 font-medium">{post.date}</span>
-                            </div>
-                            <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors line-clamp-2">
-                                {post.title}
-                            </h2>
-                            <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
-                                {post.description}
-                            </p>
-                            <div className="mt-6 flex items-center text-indigo-600 font-bold text-sm">
-                                Read More
-                                <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                            </div>
-                        </Link>
+                    {blogPosts.map((post, index) => (
+                        <div key={post.slug} className="contents">
+                            {/* Insert inner AdSense Tracker Banner after the 3rd post */}
+                            {index === 3 && (
+                                <div className="col-span-1 md:col-span-2 lg:col-span-3 mb-4">
+                                    <AdBanner slot="7907422200" />
+                                </div>
+                            )}
+                            <Link
+                                href={`/blog/${post.slug}`}
+                                className="group bg-white rounded-3xl p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 duration-300"
+                            >
+                                <div className="mb-4">
+                                    <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                                        {post.category}
+                                    </span>
+                                    <span className="ml-3 text-xs text-slate-400 font-medium">{post.date}</span>
+                                </div>
+                                <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                                    {post.title}
+                                </h2>
+                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
+                                    {post.description}
+                                </p>
+                                <div className="mt-6 flex items-center text-indigo-600 font-bold text-sm">
+                                    Read More
+                                    <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </Link>
+                        </div>
                     ))}
                 </div>
 
@@ -79,11 +86,6 @@ export default function BlogListPage() {
                     <AdBanner slot="4221082772" />
                 </div>
             </main>
-
-            {/* AdSense Lower Banner */}
-            <div className="max-w-5xl mx-auto px-4 mb-16">
-                <AdBanner slot="7907422200" />
-            </div>
 
             <Footer lang="en" />
         </div>
