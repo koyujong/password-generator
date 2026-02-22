@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
+import AdBanner from "@/components/AdBanner";
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -86,6 +87,11 @@ export default async function BlogPostPage({ params }: Props) {
                     Back to Blog
                 </Link>
 
+                {/* AdSense Top Banner */}
+                <div className="mb-10">
+                    <AdBanner slot="6780266694" />
+                </div>
+
                 <article className="bg-white rounded-[2.5rem] p-8 sm:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100">
                     <header className="mb-12">
                         <div className="flex items-center gap-3 mb-6">
@@ -119,6 +125,11 @@ export default async function BlogPostPage({ params }: Props) {
                     </div>
                 </article>
 
+                {/* AdSense Middle Banner */}
+                <div className="mt-16">
+                    <AdBanner slot="4221082772" />
+                </div>
+
                 <div className="mt-12 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl p-10 text-white shadow-2xl overflow-hidden relative group">
                     <div className="relative z-10">
                         <h2 className="text-2xl font-bold mb-4 text-white">Need a secure password right now?</h2>
@@ -133,6 +144,11 @@ export default async function BlogPostPage({ params }: Props) {
                     <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
                 </div>
             </main>
+
+            {/* AdSense Lower Banner */}
+            <div className="max-w-3xl mx-auto px-4 mb-16">
+                <AdBanner slot="7907422200" />
+            </div>
 
             <Footer lang="en" />
         </div>

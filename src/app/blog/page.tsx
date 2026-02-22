@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { blogPosts } from "@/lib/blogData";
 import Footer from "@/components/Footer";
+import AdBanner from "@/components/AdBanner";
 
 export const metadata = {
     title: "Security & Password Blog | Strong Password Generator",
@@ -30,6 +31,11 @@ export default function BlogListPage() {
             </nav>
 
             <main className="pt-32 pb-20 px-4 max-w-5xl mx-auto">
+                {/* AdSense Top Banner */}
+                <div className="mb-10">
+                    <AdBanner slot="6780266694" />
+                </div>
+
                 <header className="text-center mb-16">
                     <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
                         Security & Password Blog
@@ -67,7 +73,17 @@ export default function BlogListPage() {
                         </Link>
                     ))}
                 </div>
+
+                {/* AdSense Middle Banner */}
+                <div className="mt-16 mb-8">
+                    <AdBanner slot="4221082772" />
+                </div>
             </main>
+
+            {/* AdSense Lower Banner */}
+            <div className="max-w-5xl mx-auto px-4 mb-16">
+                <AdBanner slot="7907422200" />
+            </div>
 
             <Footer lang="en" />
         </div>
