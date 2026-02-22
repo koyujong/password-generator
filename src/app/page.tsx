@@ -409,6 +409,11 @@ export default function PasswordGeneratorPage() {
           </div>
         </section>
 
+        {/* AdSense Middle Banner - 패스워드제너레이터(중단) */}
+        <div className="mb-16">
+          <AdBanner slot="4221082772" />
+        </div>
+
         {/* FAQ Section */}
         <section>
           <h2 className="text-3xl font-black text-slate-900 mb-8 text-center">{t.faqTitle}</h2>
