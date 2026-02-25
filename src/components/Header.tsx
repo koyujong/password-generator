@@ -22,6 +22,9 @@ export default function Header({ lang, setLang, title }: HeaderProps) {
                 </Link>
 
                 <div className="flex items-center gap-6">
+                    <Link href="/" className="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">
+                        Home
+                    </Link>
                     <Link href="/blog" className="text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">
                         Blog
                     </Link>
