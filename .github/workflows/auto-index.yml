@@ -1,0 +1,50 @@
+name: Auto URL Indexing on Blog Post Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/lib/posts/**.ts'
+
+jobs:
+  index-new-posts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # 이전 커밋과 비교를 위해 2개 커밋 히스토리 필요
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install axios googleapis dotenv
+        working-directory: .github/scripts
+
+      - name: Get newly added post files
+        id: get_new_files
+        run: |
+          # 이전 커밋과 비교하여 새로 추가(A)된 post 파일만 추출
+          NEW_FILES=$(git diff --name-status HEAD~1 HEAD -- 'src/lib/posts/*.ts' | grep '^A' | awk '{print $2}')
+          echo "New files: $NEW_FILES"
+          # 파일명에서 slug 추출하여 URL 목록 생성
+          URLS=""
+          for FILE in $NEW_FILES; do
+            # 파일명: src/lib/posts/post01.ts -> post의 slug는 blogData에서 가져와야 하므로
+            # 대신, 변경된 글이 있을 경우 sitemap을 이용해 전체 URL 등록
+            URLS="$URLS $FILE"
+          done
+          echo "urls=$URLS" >> $GITHUB_OUTPUT
+
+      - name: Build URL list from changed posts and submit to search engines
+        if: steps.get_new_files.outputs.urls != ''
+        env:
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          NAVER_INDEXNOW_KEY: ${{ secrets.NAVER_INDEXNOW_KEY }}
+          BASE_URL: 'https://pw.4kdrivewalk.com'
+        run: node .github/scripts/auto-index.js "${{ steps.get_new_files.outputs.urls }}"
