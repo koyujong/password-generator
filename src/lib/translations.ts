@@ -2,7 +2,7 @@ export type Language = 'en' | 'ko' | 'es';
 
 export const translations = {
   en: {
-    title: "Strong Password Generator",
+    title: "Memorable Secure Password Generator",
     subtitle: "Create secure, random passwords instantly to protect your online accounts.",
     length: "Password Length",
     includeUppercase: "Include Uppercase (A-Z)",
@@ -59,7 +59,7 @@ export const translations = {
     noHistory: "No passwords generated yet."
   },
   ko: {
-    title: "강력한 비밀번호 생성기",
+    title: "기억하기 쉬운 안전한 비밀번호 생성기",
     subtitle: "온라인 계정을 보호하기 위해 안전하고 무작위인 비밀번호를 즉시 생성하세요.",
     length: "비밀번호 길이",
     includeUppercase: "대문자 포함 (A-Z)",
@@ -116,7 +116,7 @@ export const translations = {
     noHistory: "아직 무작위로 복사/생성된 비밀번호가 없습니다."
   },
   es: {
-    title: "Generador de Contraseñas Fuertes",
+    title: "Generador de Contraseñas Seguras y Memorables",
     subtitle: "Crea contraseñas seguras y aleatorias al instante para proteger tus cuentas en línea.",
     length: "Longitud de la Contraseña",
     includeUppercase: "Incluir Mayúsculas (A-Z)",

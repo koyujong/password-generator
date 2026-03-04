@@ -45,7 +45,7 @@ export default function BlogNav({ activePage = "blog", translations, currentLang
                     <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg">
                         <span className="font-bold">P</span>
                     </div>
-                    <span className="font-bold text-lg hidden sm:block tracking-tight text-slate-900">Strong Password Generator</span>
+                    <span className="font-bold text-lg hidden sm:block tracking-tight text-slate-900">Memorable Secure Password Generator</span>
                 </Link>
                 <div className="flex items-center gap-6">
                     <Link

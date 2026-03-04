@@ -10,7 +10,7 @@ interface FooterProps {
 
 export default function Footer({ lang }: FooterProps) {
     const t = extraTranslations[lang];
-    const mainTitle = lang === 'en' ? 'Strong Password Generator' : lang === 'ko' ? '강력한 비밀번호 생성기' : 'Generador de Contraseñas Fuertes';
+    const mainTitle = lang === 'en' ? 'Memorable Secure Password Generator' : lang === 'ko' ? '기억하기 쉬운 안전한 비밀번호 생성기' : 'Generador de Contraseñas Seguras y Memorables';
 
     return (
         <footer className="bg-white border-t border-slate-200">

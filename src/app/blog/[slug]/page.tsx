@@ -70,7 +70,7 @@ export default async function BlogPostPage({ params }: Props) {
         "datePublished": post.date,
         "author": {
             "@type": "Organization",
-            "name": "Strong Password Generator"
+            "name": "Memorable Secure Password Generator"
         }
     };
 

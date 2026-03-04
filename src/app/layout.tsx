@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pw.4kdrivewalk.com"),
-  title: "Strong Password Generator | Secure & Private",
+  title: "Memorable Secure Password Generator | Secure & Private",
   description: "Secure, random password generator. 100% client-side, private, and free.",
   alternates: {
     canonical: "/",
