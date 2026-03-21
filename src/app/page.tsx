@@ -7,6 +7,7 @@ import { generatePassword, generatePassphrase, calculateStrength, getStrengthCol
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AdBanner from "@/components/AdBanner";
+import CountdownOverlay from "@/components/CountdownOverlay";
 import {
   ClipboardDocumentIcon,
   ArrowPathIcon,
@@ -46,6 +47,8 @@ export default function PasswordGeneratorPage() {
   const [copiedHistoryIndex, setCopiedHistoryIndex] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
+  const [isCountdown, setIsCountdown] = useState(false);
+  const [pendingPassword, setPendingPassword] = useState<string | null>(null);
 
   // Load history from local storage on mount
   useEffect(() => {
@@ -93,16 +96,25 @@ export default function PasswordGeneratorPage() {
     handleGenerate();
   }, [handleGenerate]);
 
-  // Handle Explicit Generation (Button Clicks)
+  // Handle Explicit Generation (Button Clicks) — with countdown delay
   const handleGenerateClick = () => {
     const newPass = mode === 'password' ? generatePassword(length, options) : generatePassphrase(wordCount, separator);
-    setPassword(newPass);
-    const result = calculateStrength(newPass);
-    setStrength(result.score);
-    setCrackTime(result.timeString);
-    setCopied(false);
-    addToHistory(newPass);
+    setPendingPassword(newPass);
+    setIsCountdown(true);
   };
+
+  const handleCountdownComplete = useCallback(() => {
+    if (pendingPassword) {
+      setPassword(pendingPassword);
+      const result = calculateStrength(pendingPassword);
+      setStrength(result.score);
+      setCrackTime(result.timeString);
+      setCopied(false);
+      addToHistory(pendingPassword);
+      setPendingPassword(null);
+    }
+    setIsCountdown(false);
+  }, [pendingPassword]);
 
   const handleCopyHistory = (pw: string, index: number) => {
     navigator.clipboard.writeText(pw);
@@ -429,6 +441,15 @@ export default function PasswordGeneratorPage() {
       </main>
 
       <Footer lang={lang} />
+
+      {/* Countdown Overlay */}
+      {isCountdown && (
+        <CountdownOverlay
+          duration={10}
+          onComplete={handleCountdownComplete}
+          lang={lang}
+        />
+      )}
     </div>
   );
 }
